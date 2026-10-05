@@ -119,6 +119,11 @@ public class BO1Proto1 extends PApplet {
 	public int getClosestSquare() {
 		PVector mouse = new PVector(mouseX, mouseY);
 
+		PVector absoluteCenter = new PVector(355, 355);
+//		if (PVector.dist(mouse, absoluteCenter) < 10) {
+//			return -1;
+//		}
+
 		Rectangle closest = getButtonLocation(0);
 		PVector closestCenter = new PVector(closest.x + ((float) closest.width / 2), closest.y + ((float) closest.y / 2));
 
