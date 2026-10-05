@@ -6,15 +6,14 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.Collections;
 import processing.core.PApplet;
-import processing.core.PVector;
 
-public class BO1Proto1 extends PApplet {
+public class BakeOff1 extends PApplet {
 	// when in doubt, consult the Processsing reference:
 	// https://processing.org/reference/
 	// The argument passed to main must match the class name
 	public static void main(String[] args) {
 		// Tell processing what class we want to run.
-		PApplet.main("cs3540.BO1Proto1");
+		PApplet.main("cs3540.BakeOff1");
 	}
 
 	int margin = 200; // set the margin around the squares
@@ -29,9 +28,6 @@ public class BO1Proto1 extends PApplet {
 	Robot robot; // initialized in setup
 
 	int numRepeats = 1; // sets the number of times each button repeats in the test
-
-	int selected = 0; // The currently highlighted square
-	PVector relativeCenter;
 
 	/**
 	 * https://processing.org/reference/settings_.html#:~:text=The%20settings()%20method%20runs,commands%20in%20the%20Processing%20API.
@@ -71,9 +67,6 @@ public class BO1Proto1 extends PApplet {
 		System.out.println("trial order: " + trials); // print out order for reference
 
 		surface.setLocation(0, 0);// put window in top left corner of screen (doesn't always work)
-
-		relativeCenter = new PVector(((float) width / 2) + 5, ((float) height / 2) + 66);
-		//robot.mouseMove((int) relativeCenter.x, (int) relativeCenter.y);
 	}
 
 	public void draw() {
@@ -95,61 +88,22 @@ public class BO1Proto1 extends PApplet {
 			text("Average time for each button + penalty: "
 					+ nf(((timeTaken) / (float) (hits + misses) + penalty), 0, 3) + " sec", width / 2,
 					height / 2 + 140);
-			cursor();
 			return; // return, nothing else to do now test is over
-		} else {
-			//noCursor();
 		}
 
 		fill(255); // set fill color to white
 		text((trialNum + 1) + " of " + trials.size(), 40, 20); // display what trial the user is on
 
-		selected = getClosestSquare();
-		if (selected >= 0)
-			drawHighlight(selected);
-		else {
-			fill(255, 0, 0);
-			circle(mouseX, mouseY, 10);
-		}
-
 		for (int i = 0; i < 16; i++)// for all button
 			drawButton(i); // draw button
-	}
 
-	public int getClosestSquare() {
-		PVector mouse = new PVector(mouseX, mouseY);
+		fill(255, 0, 0, 200); // set fill color to translucent red
+		ellipse(mouseX, mouseY, 20, 20); // draw user cursor as a circle with a diameter of 20
 
-		Rectangle closest = getButtonLocation(0);
-		PVector closestCenter = new PVector(closest.x + ((float) closest.width / 2), closest.y + ((float) closest.y / 2));
-
-		float closestDist = PVector.dist(mouse, closestCenter);
-		int rect_i = 0;
-		for (int i = 1; i < 16; i++) {
-			Rectangle loc = getButtonLocation(i);
-			PVector center = new PVector(loc.x + ((float) loc.width / 2), loc.y + ((float) loc.height / 2));
-			float distance = PVector.dist(mouse, center);
-
-			if (distance < closestDist) {
-				rect_i = i;
-				closestDist = distance;
-			}
-		}
-
-		return rect_i;
-	}
-
-	public void drawHighlight(int rectangleIndex) {
-		Rectangle sq = getButtonLocation(rectangleIndex);
-		PVector pos = new PVector(sq.x - (sq.width / 10), sq.y - (sq.height / 10));
-		fill(255, 0, 0);
-
-		rect(pos.x, pos.y, (float) (buttonSize * 1.20), (float) (buttonSize * 1.20));
 	}
 
 	public void mousePressed() // test to see if hit was in target!
 	{
-		println("(" + width + ", " + height);
-		println("(" + mouseX + ", " + mouseY + ")");
 		if (trialNum >= trials.size()) // check if task is done
 			return;
 
@@ -163,8 +117,11 @@ public class BO1Proto1 extends PApplet {
 			System.out.println("we're all done!");
 		}
 
+		Rectangle bounds = getButtonLocation(trials.get(trialNum));
+
 		// check to see if cursor was inside button
-		if (selected == trials.get(trialNum)) // test to see if hit was within bounds
+		if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width)
+				&& (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
 		{
 			System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
 			hits++;
@@ -175,7 +132,11 @@ public class BO1Proto1 extends PApplet {
 
 		trialNum++; // Increment trial number
 
-		//robot.mouseMove((int) relativeCenter.x, (int) relativeCenter.y);
+		// in this example design, I move the cursor back to the middle after each click
+		// Note. When running from eclipse the robot class affects the whole screen not
+		// just the GUI, so the mouse may move outside of the GUI.
+		// robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly
+		// center of window!
 	}
 
 	// probably shouldn't have to edit this method
@@ -193,8 +154,6 @@ public class BO1Proto1 extends PApplet {
 
 		if (trials.get(trialNum) == i) // see if current button is the target
 			fill(0, 255, 255); // if so, fill cyan
-//		else if (trialNum < trials.size() - 1 && trials.get(trialNum + 1) == i) // Highlights the next target ever so slightly
-//			fill(lerpColor(color(0, 255, 255), color(200), (float) 0.80)); // fill the next target light cyan
 		else
 			fill(200); // if not, fill gray
 
