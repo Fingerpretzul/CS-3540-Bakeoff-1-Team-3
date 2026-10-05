@@ -29,6 +29,7 @@ public class BakeOff1 extends PApplet {
 	Robot robot; // initialized in setup
 
 	int selected = 0;
+	int squareColor = color(0, 255, 255);
 
 	int numRepeats = 1; // sets the number of times each button repeats in the test
 
@@ -71,9 +72,6 @@ public class BakeOff1 extends PApplet {
 
 		surface.setLocation(0, 0);// put window in top left corner of screen (doesn't always work)
 
-		for (int i = 0; i < 16; i++) {
-			println(getButtonLocation(i));
-		}
 	}
 
 	public void draw() {
@@ -102,18 +100,16 @@ public class BakeOff1 extends PApplet {
 		fill(255); // set fill color to white
 		text((trialNum + 1) + " of " + trials.size(), 40, 20); // display what trial the user is on
 
-		int newSelected = getClosestSquare();
-		if (newSelected != selected)
-			println("Selecting square " + newSelected);
-		selected = newSelected;
+		selected = getClosestSquare();
 		drawHighlight(selected);
 
 		for (int i = 0; i < 16; i++)// for all button
 			drawButton(i); // draw button
 
 //		fill(255, 0, 0, 200); // set fill color to translucent red
-//		ellipse(mouseX, mouseY, 20, 20); // draw user cursor as a circle with a diameter of 20
+//		ellipse(mouseX, mouseY, 10, 10); // draw user cursor as a circle with a diameter of 20
 
+		colorAdvance();
 	}
 
 	public int getClosestSquare() {
@@ -193,11 +189,36 @@ public class BakeOff1 extends PApplet {
 		Rectangle bounds = getButtonLocation(i);
 
 		if (trials.get(trialNum) == i) // see if current button is the target
-			fill(0, 255, 255); // if so, fill cyan
+			fill(squareColor); // if so, fill cyan
+		else if (trialNum < trials.size() - 1 && trials.get(trialNum + 1) == i)
+			fill(lerpColor(squareColor, color(200), (float) 0.75)); // fill the next target light cyan
 		else
 			fill(200); // if not, fill gray
 
 		rect(bounds.x, bounds.y, bounds.width, bounds.height);
+	}
+
+	/**
+	 * Written by Apple Intelligence
+	 * Prompt:
+	 * "Can you write a simple function for Processing.
+	 * It needs to update a color variable called squareColor and
+	 * make it cycle through the rainbow. Utilize millis(),
+	 * and don't create any new global variables"
+	 */
+	void colorAdvance() {
+		// Temporarily switch to HSB mode to easily cycle through hues
+		colorMode(HSB, 360, 100, 100);
+
+		// Calculate hue based on time.
+		// millis() / 10 controls the speed (higher number = slower cycle)
+		float hue = (millis() / 10) % 360;
+
+		// Update the color variable
+		squareColor = color(hue, 100, 100);
+
+		// Restore the default RGB color mode so the rest of your sketch isn't affected
+		colorMode(RGB, 255, 255, 255);
 	}
 
 	public void mouseMoved() {
