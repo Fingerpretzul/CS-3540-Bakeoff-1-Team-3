@@ -258,11 +258,14 @@ public class BakeOff1 extends PApplet {
 		if (col == -1) target = trials.get(trialNum) % 4;
 		else target = floor(trials.get(trialNum) / 4);
 
-		textSize(28);
+		textSize(64);
+		fill(255);
+
 		if (target == 0) text("↑", width/2, (height/2) - 100);
 		else if (target == 1) text("→", width/2, (height/2) - 100);
 		else if (target == 2) text("↓", width/2, (height/2) - 100);
 		else if (target == 3) text("←", width/2, (height/2) - 100);
+		textSize(16);
 
 	}
 }
