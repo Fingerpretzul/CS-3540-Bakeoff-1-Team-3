@@ -38,7 +38,7 @@ public class BakeOff1 extends PApplet {
 	 * https://processing.org/reference/settings_.html#:~:text=The%20settings()%20method%20runs,commands%20in%20the%20Processing%20API.
 	 */
 	public void settings() {
-		size(1920, 1200);
+		size(displayWidth, displayHeight);
 	}
 
 	/**
