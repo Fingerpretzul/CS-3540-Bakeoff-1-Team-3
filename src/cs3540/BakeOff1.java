@@ -33,7 +33,7 @@ public class BakeOff1 extends PApplet {
 	int backgroundColor = color(15);
 	int highlightColor = color(255, 0, 0);
 
-	int numRepeats = 1; // sets the number of times each button repeats in the test
+	int numRepeats = 3; // sets the number of times each button repeats in the test
 
 	/**
 	 * https://processing.org/reference/settings_.html#:~:text=The%20settings()%20method%20runs,commands%20in%20the%20Processing%20API.
@@ -145,8 +145,7 @@ public class BakeOff1 extends PApplet {
 		rect(pos.x, pos.y, (float) (buttonSize * highlightSize), (float) (buttonSize * highlightSize));
 	}
 
-	public void mousePressed() // test to see if hit was in target!
-	{
+	public void select() {
 		if (trialNum >= trials.size()) // check if task is done
 			return;
 
@@ -177,6 +176,15 @@ public class BakeOff1 extends PApplet {
 		// just the GUI, so the mouse may move outside of the GUI.
 		// robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly
 		// center of window!
+	}
+
+	public void mousePressed() // test to see if hit was in target!
+	{
+		select();
+	}
+
+	public void keyPressed() {
+		select();
 	}
 
 	// probably shouldn't have to edit this method
@@ -215,11 +223,5 @@ public class BakeOff1 extends PApplet {
 	public void mouseDragged() {
 		// can do stuff everytime the mouse is dragged
 		// https://processing.org/reference/mouseDragged_.html
-	}
-
-	public void keyPressed() {
-		// can use the keyboard if you wish
-		// https://processing.org/reference/keyTyped_.html
-		// https://processing.org/reference/keyCode.html
 	}
 }
