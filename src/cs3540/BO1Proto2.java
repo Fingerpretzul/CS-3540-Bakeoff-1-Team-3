@@ -108,7 +108,7 @@ public class BO1Proto2 extends PApplet {
 		strokeWeight(15);
 		stroke(255, 0, 0, 200);
 		line(mouseX, mouseY, target.x + (target.width / 2), target.y + (target.height / 2));
-		colorAdvance();
+		//colorAdvance();
 	}
 
 	/**

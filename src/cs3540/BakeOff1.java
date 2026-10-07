@@ -29,7 +29,9 @@ public class BakeOff1 extends PApplet {
 	Robot robot; // initialized in setup
 
 	int selected = 0;
-	int squareColor = color(0, 255, 255);
+	int squareColor = color(0, 147, 209);
+	int backgroundColor = color(15);
+	int highlightColor = color(255, 0, 0);
 
 	int numRepeats = 1; // sets the number of times each button repeats in the test
 
@@ -75,7 +77,9 @@ public class BakeOff1 extends PApplet {
 	}
 
 	public void draw() {
-		background(0); // set background to black
+		background(backgroundColor); // set background to black
+		textFont(createFont("Arial", 16)); // sets the font to Arial size 16
+		textAlign(CENTER);
 
 		if (trialNum >= trials.size()) // check to see if test is over
 		{
@@ -109,7 +113,7 @@ public class BakeOff1 extends PApplet {
 //		fill(255, 0, 0, 200); // set fill color to translucent red
 //		ellipse(mouseX, mouseY, 10, 10); // draw user cursor as a circle with a diameter of 20
 
-		colorAdvance();
+		// colorAdvance();
 	}
 
 	public int getClosestSquare() {
@@ -136,7 +140,7 @@ public class BakeOff1 extends PApplet {
 
 		Rectangle sq = getButtonLocation(rectangleIndex);
 		PVector pos = new PVector(sq.x - ((float) sq.width / 10), sq.y - ((float) sq.height / 10));
-		fill(255, 0, 0);
+		fill(highlightColor);
 
 		rect(pos.x, pos.y, (float) (buttonSize * highlightSize), (float) (buttonSize * highlightSize));
 	}
@@ -191,11 +195,16 @@ public class BakeOff1 extends PApplet {
 		if (trials.get(trialNum) == i) // see if current button is the target
 			fill(squareColor); // if so, fill cyan
 		else if (trialNum < trials.size() - 1 && trials.get(trialNum + 1) == i)
-			fill(lerpColor(squareColor, color(200), (float) 0.75)); // fill the next target light cyan
+			fill(lerpColor(squareColor, color(200), (float) 0.65)); // fill the next target light cyan
 		else
 			fill(200); // if not, fill gray
 
 		rect(bounds.x, bounds.y, bounds.width, bounds.height);
+		if (trials.get(trialNum) == i) {// see if current button is the target
+			fill(255, 214, 84);
+			textSize(45);
+			text('X', bounds.x + 20, bounds.y + 36);
+		}
 	}
 
 	/**
@@ -215,7 +224,7 @@ public class BakeOff1 extends PApplet {
 		float hue = (millis() / 10) % 360;
 
 		// Update the color variable
-		squareColor = color(hue, 100, 100);
+		highlightColor = color(hue, 100, 100);
 
 		// Restore the default RGB color mode so the rest of your sketch isn't affected
 		colorMode(RGB, 255, 255, 255);
