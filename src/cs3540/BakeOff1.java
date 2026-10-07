@@ -207,29 +207,6 @@ public class BakeOff1 extends PApplet {
 		}
 	}
 
-	/**
-	 * Written by Apple Intelligence
-	 * Prompt:
-	 * "Can you write a simple function for Processing.
-	 * It needs to update a color variable called squareColor and
-	 * make it cycle through the rainbow. Utilize millis(),
-	 * and don't create any new global variables"
-	 */
-	void colorAdvance() {
-		// Temporarily switch to HSB mode to easily cycle through hues
-		colorMode(HSB, 360, 100, 100);
-
-		// Calculate hue based on time.
-		// millis() / 10 controls the speed (higher number = slower cycle)
-		float hue = (millis() / 10) % 360;
-
-		// Update the color variable
-		highlightColor = color(hue, 100, 100);
-
-		// Restore the default RGB color mode so the rest of your sketch isn't affected
-		colorMode(RGB, 255, 255, 255);
-	}
-
 	public void mouseMoved() {
 		// can do stuff everytime the mouse is moved (i.e., not clicked)
 		// https://processing.org/reference/mouseMoved_.html
